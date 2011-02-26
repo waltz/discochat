@@ -1,3 +1,6 @@
 [submodule "vendor/socket.io"]
 	path = vendor/socket.io
 	url = git://github.com/LearnBoost/Socket.IO-node.git
+[submodule "vendor/node_redis"]
+	path = vendor/node_redis
+	url = https://github.com/mranney/node_redis.git
