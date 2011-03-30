@@ -46,6 +46,10 @@ var server = http.createServer(function(request, response) {
         var handler = staticHandler.serve('./client.js');
         handler(request, response);
         break;
+    case "/jquery.cookie.js":
+        var handler = staticHandler.serve('./vendor/jquery.cookie.js');
+        handler(request, response);
+        break;
     default:
         send404(response);
     }
@@ -74,7 +78,7 @@ socket.on('connection', function(client) {
             util.log(util.inspect(data.setUsername));
             redisStorage.set(client.sessionId, data.setUsername, function(err, res) {
                 redisPublish.publish("chat",
-                                     JSON.stringify({ "announcement": { "text": data["setUsername"] + " has joined." }})
+                                     JSON.stringify({ "announcement": { "text": data["setUsername"] + " has joined" }})
                 );
             });
         }

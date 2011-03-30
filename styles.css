@@ -112,11 +112,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFDD44', end
    font-style: italic;
 }
 
-.username {
-   color: red;
-   margin-right: 10px;
-}
-
 #room_container {
    display: none;
    width: 906px;
@@ -145,10 +140,31 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFDD44', end
 #message_list {
    background-color: #fff;
    margin: 0;
-   padding: 10px;
+   padding: 0;
    height: 480px;
    overflow: auto;
    text-align: left;
+}
+
+#message_list li {
+   padding: 10px;
+   border-bottom: 1px solid #ddd;
+}
+
+#message_list li.announcement {
+   text-align: center;
+}
+
+#message_list li:hover {
+   background: #efefef;
+}
+
+#message_list span.username {
+   text-shadow: 1px 1px 1px #ffcc33;
+   width: 100px !important;
+   overflow: hidden;
+   color: #ffcc33;
+   padding-right: 10px;
 }
 
 #message {

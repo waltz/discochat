@@ -5,11 +5,7 @@ var playlist = new Array;
 var player;
 
 function onYouTubePlayerAPIReady() {
-    // player = new YT.Player('player', {
-    //     videoId: 'skKJNmW1czw',
-    //     playerVars: { 'controls': 0 },
-    //     events: { 'onStateChange': onStateChange }
-    // });
+
 }
 
 function onStateChange(state) {
@@ -24,10 +20,26 @@ function onStateChange(state) {
 
 function updatePlaylist() {
     $("#playlist").text(playlist.toString());
+
+    // If there is no defined player, create one.
+    if (player == undefined) {
+      player = new YT.Player('player', {
+            height: '200px',
+            width: '200px',
+            videoId: 'skKJNmW1czw',
+            playerVars: { 'controls': 0 },
+            events: { 'onStateChange': onStateChange }
+        });
+    }
 }
 
 // The bulk of the client business gets handled in here.
 $(function() {
+    // Check to see if they've entered a username before.
+    if ($.cookie('username') != null) {
+        $("#username").val($.cookie('username'));
+    }
+    
     $('.default_value').each(function() {
         var default_value = this.value;
         $(this).focus(function() {
@@ -45,8 +57,11 @@ $(function() {
     // When the user picks a username, connect to the server.
     $("#get_a_username").submit(function(event) {
         event.preventDefault();
-        
+
         var username = $("#username").val();
+
+        // Store the username in cookie.
+        $.cookie('username', username);
 
         socket = new io.Socket(document.location.hostname, { port: document.location.port, rememberTransport: false });
         socket.connect();
@@ -75,7 +90,7 @@ $(function() {
                 element.fadeIn('fast');
             } else if (data.hasOwnProperty("announcement")) {
                 element.addClass("announcement");
-                element.text(data["announcement"]["text"]);     
+                element.text(data["announcement"]["text"]);
                 $("#message_list").append(element);
                 $("#message_list").scrollTop(1000000);
                 element.fadeIn('fast');
@@ -86,7 +101,7 @@ $(function() {
             } else {
                 console.log("Caught an unroutable message!");
                 console.log(data);
-            }                                
+            }
         });
 
         // Bind to the form submit and send the message to the server.
@@ -115,7 +130,7 @@ $(function() {
             if (socket.disconnected) {
                 socket.connect()
             }
-            
+
             // Send the video ids.
             if (video_ids.length > 0) {
                 socket.send({ 'videos': video_ids });
